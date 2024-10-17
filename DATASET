@@ -1,0 +1,29 @@
+Estrutura do Dataset
+
+1. Professores
+
+id: Identificador único do professor
+nome: Nome do professor
+aulas_por_semana: Número de aulas que o professor tem por semana
+
+2. Turmas
+
+id: Identificador único da turma
+ano: Ano da turma
+serie: Série da turma
+
+
+3. Disciplinas
+
+id: Identificador único da disciplina
+nome: Nome da disciplina
+professor_id: ID do professor responsável pela disciplina
+turma_id: ID da turma em que a disciplina é oferecida
+
+
+4. Horários
+
+id: Identificador único do horário
+disciplina_id: ID da disciplina
+turma_id: ID da turma
+horario: Horário da aula (ex: 08:00)
