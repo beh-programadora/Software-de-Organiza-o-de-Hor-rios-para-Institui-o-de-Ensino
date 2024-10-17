@@ -1,0 +1,33 @@
+horario_manager/
+│
+├── README.md                  # Documentação do projeto
+├── requirements.txt           # Dependências do projeto
+├── .gitignore                 # Arquivos e pastas a serem ignorados pelo Git
+│
+├── src/                       # Código fonte do projeto
+│   ├── __init__.py            # Torna o diretório um pacote Python
+│   ├── main.py                # Código principal do aplicativo
+│   ├── horario_manager.py      # Classe principal do gerenciador de horários
+│   └── utils.py               # Funções auxiliares (se necessário)
+│
+└── datasets/                  # Diretório para armazenar datasets (se houver)
+    └── sample_data.csv        # Exemplo de arquivo CSV para uso (pode ser ajustado)
+
+Descrição dos Componentes
+horario_manager/: Diretório raiz do projeto.
+
+README.md: Contém a descrição do projeto, objetivos, instruções de execução e resultados principais.
+
+requirements.txt: Lista as bibliotecas e dependências necessárias para o projeto.
+
+.gitignore: Especifica arquivos e diretórios que não devem ser rastreados pelo Git (como arquivos temporários ou gerados).
+
+src/: Diretório que contém o código fonte do projeto.
+
+init.py: Este arquivo torna o diretório um pacote Python, permitindo a importação de seus módulos.
+main.py: Contém o ponto de entrada do aplicativo, onde a interface gráfica é inicializada.
+horario_manager.py: Implementa a classe HorarioManager, contendo toda a lógica do aplicativo.
+utils.py: (opcional) Pode conter funções auxiliares que ajudam a manter o código organizado.
+datasets/: Diretório onde você pode armazenar datasets que o aplicativo pode usar.
+
+sample_data.csv: Um arquivo CSV de exemplo que pode ser usado para testes ou como template.
