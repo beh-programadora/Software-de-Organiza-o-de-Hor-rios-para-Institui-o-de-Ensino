@@ -43,9 +43,3 @@ Os horários podem ser salvos em um arquivo PDF, que é gerado na pasta de Downl
 Contribuições
 Contribuições são bem-vindas! Sinta-se à vontade para abrir uma issue ou enviar um pull request.
 
-
-### 2. `requirements.txt`
-
-```plaintext
-tkinter
-reportlab
