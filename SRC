@@ -1,0 +1,143 @@
+import tkinter as tk
+from tkinter import messagebox, simpledialog, ttk
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+import os
+
+
+class HorarioManager:
+    def __init__(self, master):
+        self.master = master
+        self.master.title("Gerenciador de Horários de Professores")
+        self.master.geometry("800x600")
+        
+        self.professores = {}
+        self.turmas = {}
+        self.disciplinas = {}
+        self.horarios = []
+
+        self.create_widgets()
+
+    def create_widgets(self):
+        # Cadastro de Professores
+        self.frame_professores = tk.LabelFrame(self.master, text="Cadastro de Professores", padx=10, pady=10)
+        self.frame_professores.pack(padx=10, pady=10, fill="both", expand=True)
+
+        self.btn_add_professor = tk.Button(self.frame_professores, text="Adicionar Professor", command=self.add_professor)
+        self.btn_add_professor.pack(padx=10, pady=5)
+
+        # Cadastro de Turmas
+        self.frame_turmas = tk.LabelFrame(self.master, text="Cadastro de Turmas", padx=10, pady=10)
+        self.frame_turmas.pack(padx=10, pady=10, fill="both", expand=True)
+
+        self.btn_add_turma = tk.Button(self.frame_turmas, text="Adicionar Turma", command=self.add_turma)
+        self.btn_add_turma.pack(padx=10, pady=5)
+
+        # Cadastro de Disciplinas
+        self.frame_disciplinas = tk.LabelFrame(self.master, text="Cadastro de Disciplinas", padx=10, pady=10)
+        self.frame_disciplinas.pack(padx=10, pady=10, fill="both", expand=True)
+
+        self.btn_add_disciplina = tk.Button(self.frame_disciplinas, text="Adicionar Disciplina", command=self.add_disciplina)
+        self.btn_add_disciplina.pack(padx=10, pady=5)
+
+        # Gestão de Horários
+        self.frame_horarios = tk.LabelFrame(self.master, text="Gestão de Horários", padx=10, pady=10)
+        self.frame_horarios.pack(padx=10, pady=10, fill="both", expand=True)
+
+        self.btn_organizar_horarios = tk.Button(self.frame_horarios, text="Organizar Horários", command=self.organizar_horarios)
+        self.btn_organizar_horarios.pack(padx=10, pady=5)
+
+        self.btn_visualizar_horarios = tk.Button(self.frame_horarios, text="Visualizar Horários", command=self.visualizar_horarios)
+        self.btn_visualizar_horarios.pack(padx=10, pady=5)
+
+        self.btn_salvar_pdf = tk.Button(self.frame_horarios, text="Salvar em PDF", command=self.salvar_pdf)
+        self.btn_salvar_pdf.pack(padx=10, pady=5)
+
+        # Registro de Horário Manual
+        self.btn_registrar_manual = tk.Button(self.frame_horarios, text="Registrar Horário Manual", command=self.registrar_horario_manual)
+        self.btn_registrar_manual.pack(padx=10, pady=5)
+
+    def add_professor(self):
+        nome = simpledialog.askstring("Nome do Professor", "Digite o nome do professor:")
+        if nome:
+            aulas_semana = simpledialog.askinteger("Aulas por Semana", "Quantas aulas o professor terá por semana?")
+            if aulas_semana is not None:
+                self.professores[nome] = aulas_semana
+                messagebox.showinfo("Sucesso", f"Professor {nome} cadastrado com {aulas_semana} aulas por semana.")
+    
+    def add_turma(self):
+        ano = simpledialog.askstring("Ano da Turma", "Digite o ano da turma:")
+        serie = simpledialog.askstring("Série da Turma", "Digite a série da turma:")
+        if ano and serie:
+            self.turmas[f"{ano} - {serie}"] = {}
+            messagebox.showinfo("Sucesso", f"Turma {ano} - {serie} cadastrada.")
+
+    def add_disciplina(self):
+        nome = simpledialog.askstring("Nome da Disciplina", "Digite o nome da disciplina:")
+        professor = simpledialog.askstring("Professor da Disciplina", "Digite o nome do professor:")
+        turma = simpledialog.askstring("Turma da Disciplina", "Digite a turma (Ano - Série):")
+        if nome and professor and turma in self.turmas:
+            self.disciplinas[nome] = {'professor': professor, 'turma': turma}
+            messagebox.showinfo("Sucesso", f"Disciplina {nome} cadastrada para {professor} na turma {turma}.")
+        else:
+            messagebox.showwarning("Erro", "Turma não encontrada ou informações inválidas.")
+
+    def organizar_horarios(self):
+        # Algoritmo simplificado para organizar horários
+        self.horarios.clear()
+        for disciplina, info in self.disciplinas.items():
+            horario = {
+                'disciplina': disciplina,
+                'professor': info['professor'],
+                'turma': info['turma'],
+                'horario': f"{len(self.horarios) + 1}:00"
+            }
+            self.horarios.append(horario)
+
+        messagebox.showinfo("Sucesso", "Horários organizados com sucesso!")
+
+    def visualizar_horarios(self):
+        horario_texto = ""
+        for h in self.horarios:
+            horario_texto += f"{h['horario']} - {h['disciplina']} ({h['professor']} - {h['turma']})\n"
+        messagebox.showinfo("Horários Organizados", horario_texto or "Nenhum horário organizado.")
+
+    def salvar_pdf(self):
+        if not self.horarios:
+            messagebox.showwarning("Erro", "Nenhum horário para salvar.")
+            return
+
+        downloads_path = os.path.expanduser("~/Downloads")
+        pdf_path = os.path.join(downloads_path, "horarios.pdf")
+        c = canvas.Canvas(pdf_path, pagesize=letter)
+        c.drawString(100, 750, "Horários Organizacionais")
+        y = 720
+        for h in self.horarios:
+            c.drawString(100, y, f"{h['horario']} - {h['disciplina']} ({h['professor']} - {h['turma']})")
+            y -= 20
+        c.save()
+
+        messagebox.showinfo("Sucesso", f"Horário salvo em: {pdf_path}")
+
+    def registrar_horario_manual(self):
+        disciplina = simpledialog.askstring("Disciplina", "Digite a disciplina:")
+        professor = simpledialog.askstring("Professor", "Digite o professor:")
+        turma = simpledialog.askstring("Turma", "Digite a turma (Ano - Série):")
+        horario = simpledialog.askstring("Horário", "Digite o horário (ex: 10:00):")
+        if disciplina and professor and turma and horario:
+            # Adiciona horário manual
+            self.horarios.append({
+                'disciplina': disciplina,
+                'professor': professor,
+                'turma': turma,
+                'horario': horario
+            })
+            messagebox.showinfo("Sucesso", "Horário manual registrado com sucesso!")
+        else:
+            messagebox.showwarning("Erro", "Informações inválidas.")
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = HorarioManager(root)
+    root.mainloop()
+
