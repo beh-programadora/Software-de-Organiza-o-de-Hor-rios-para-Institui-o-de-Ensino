@@ -1,0 +1,38 @@
+# Ignorar arquivos de cache do Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignorar ambientes virtuais
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Ignorar arquivos PDF gerados
+*.pdf
+
+# Ignorar arquivos de dados temporários
+*.csv
+*.xlsx
+
+# Ignorar arquivos de backup
+*.bak
+*.tmp
+
+# Ignorar arquivos de configuração do IDE
+.vscode/
+.idea/
+
+# Ignorar logs
+*.log
+
+# Ignorar arquivos de pacotes do Python
+*.egg
+*.egg-info/
+
+# Ignorar arquivos de cache do sistema
+.DS_Store
+Thumbs.db
